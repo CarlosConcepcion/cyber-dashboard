@@ -1,46 +1,503 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Cyber Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carlos Concepción — Ciberseguridad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0d12;
+      --surface: #13131c;
+      --surface2: #1a1a28;
+      --purple: #7c5cbf;
+      --purple-light: #a07de0;
+      --purple-dim: #4a3880;
+      --accent: #c084fc;
+      --text: #e2e0f0;
+      --muted: #7c7a9a;
+      --border: #2a2840;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(124,92,191,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,92,191,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(13,13,18,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .about-section {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: start;
+      margin-bottom: 5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .pixel-character {
+      width: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .pixel-art {
+      image-rendering: pixelated;
+      width: 140px;
+      height: 140px;
+      filter: drop-shadow(0 0 20px rgba(160,125,224,0.5));
+    }
+
+    .deco { position: relative; }
+    .deco::after {
+      content: '✦';
+      position: absolute;
+      color: var(--purple-dim);
+      font-size: 1.2rem;
+      top: -20px; right: -10px;
+      animation: spin 8s linear infinite;
+    }
+
+    .skills-section {
+      margin-bottom: 5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s ease forwards;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      cursor: default;
+    }
+
+    .skill-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(124,92,191,0.2);
+    }
+
+    .skill-card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .tag {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--purple-light);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .skill-card:hover .tag {
+      background: rgba(124,92,191,0.12);
+      border-color: var(--purple-dim);
+    }
+
+    .skill-bar-list {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .skill-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .skill-bar-track {
+      height: 5px;
+      background: var(--surface2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--accent));
+      border-radius: 999px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .experience-section {
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s ease forwards;
+    }
+
+    .timeline {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 40px;
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--purple), var(--purple-dim), transparent);
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding-bottom: 2rem;
+    }
+
+    .timeline-year {
+      width: 82px;
+      height: 82px;
+      flex-shrink: 0;
+      background: var(--purple);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 0 20px rgba(124,92,191,0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-card {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem 1.6rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .timeline-card:hover {
+      border-color: var(--purple);
+      box-shadow: 0 4px 24px rgba(124,92,191,0.12);
+    }
+
+    .timeline-role {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-company {
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .timeline-desc {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 4rem 0;
+    }
+
+    .github-section {
+      opacity: 0;
+      animation: fadeUp 0.7s 0.6s ease forwards;
+    }
+
+    .github-stats-img {
+      border-radius: 12px;
+      margin-top: 1.5rem;
+      max-width: 100%;
+      border: 1px solid var(--border);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
+<body>
 
-<body class="bg-black text-white p-8 font-sans">
+<nav>
+  <div class="logo">carlos.cc</div>
+  <ul class="nav-links">
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#" class="active">Sobre mí</a></li>
+    <li><a href="#">Proyectos</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Contacto</a></li>
+  </ul>
+</nav>
 
-<h1 class="text-4xl text-purple-400 mb-6 font-bold">
-⚡ SOLO LEVELING CYBER SYSTEM ⚡
-</h1>
+<main>
 
-<div class="bg-gray-900 p-6 rounded-xl mb-6 shadow-lg">
-<h2 class="text-purple-300 text-xl mb-2">🧠 SYSTEM PROFILE</h2>
-<p>👤 Carlos Concepción</p>
-<p>🎓 Cybersecurity Student (UTP)</p>
-<p>💼 Junior Pentester</p>
-<p>📍 Panamá</p>
-</div>
+  <!-- SOBRE MÍ -->
+  <section class="about-section">
+    <div class="about-text">
+      <h1 class="section-title">Sobre mí</h1>
+      <p>Soy un estudiante apasionado de ciberseguridad y pentester junior con experiencia práctica en análisis de vulnerabilidades, detección de amenazas y seguridad de redes.</p>
+      <p>Cuando no estoy cazando bugs, me encuentro en laboratorios de TryHackMe, contribuyendo a herramientas de seguridad de código abierto o explorando nuevos vectores de ataque.</p>
+      <p>Siempre estoy emocionado de trabajar en proyectos que me desafíen a crecer y aprender algo nuevo.</p>
+    </div>
+    <div class="pixel-character deco">
+      <svg class="pixel-art" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="4" y="7" width="8" height="7" fill="#7c5cbf"/>
+        <rect x="3" y="3" width="10" height="6" fill="#7c5cbf"/>
+        <rect x="3" y="1" width="2" height="3" fill="#7c5cbf"/>
+        <rect x="11" y="1" width="2" height="3" fill="#7c5cbf"/>
+        <rect x="3" y="2" width="1" height="2" fill="#c084fc"/>
+        <rect x="12" y="2" width="1" height="2" fill="#c084fc"/>
+        <rect x="5" y="5" width="2" height="2" fill="#1a1a28"/>
+        <rect x="9" y="5" width="2" height="2" fill="#1a1a28"/>
+        <rect x="5" y="5" width="1" height="1" fill="#ffffff" opacity="0.8"/>
+        <rect x="9" y="5" width="1" height="1" fill="#ffffff" opacity="0.8"/>
+        <rect x="7" y="7" width="2" height="1" fill="#c084fc"/>
+        <rect x="6" y="8" width="1" height="1" fill="#c084fc"/>
+        <rect x="9" y="8" width="1" height="1" fill="#c084fc"/>
+        <rect x="4" y="13" width="3" height="1" fill="#9d7dcf"/>
+        <rect x="9" y="13" width="3" height="1" fill="#9d7dcf"/>
+        <rect x="12" y="9" width="2" height="4" fill="#7c5cbf"/>
+        <rect x="13" y="8" width="2" height="1" fill="#7c5cbf"/>
+        <rect x="0" y="2" width="1" height="1" fill="#c084fc" opacity="0.7"/>
+        <rect x="15" y="4" width="1" height="1" fill="#c084fc" opacity="0.7"/>
+        <rect x="1" y="10" width="1" height="1" fill="#a07de0" opacity="0.5"/>
+        <rect x="14" y="12" width="1" height="1" fill="#a07de0" opacity="0.5"/>
+      </svg>
+    </div>
+  </section>
 
-<div class="bg-gray-900 p-6 rounded-xl mb-6 shadow-lg">
-<h2 class="text-purple-300 text-xl mb-2">📊 SKILLS</h2>
-<p>Web Security ███████░ 70%</p>
-<p>Networking ████████░ 80%</p>
-<p>Threat Detection ██████░ 60%</p>
-<p>Python ██████░░ 60%</p>
-</div>
+  <div class="divider"></div>
 
-<div class="bg-gray-900 p-6 rounded-xl mb-6 shadow-lg">
-<h2 class="text-purple-300 text-xl mb-2">🧪 EXPERIENCE</h2>
-<p>✔ Cybersecurity Auditor - Avonatra Technologies</p>
-<p>✔ Nmap scanning & vulnerability analysis</p>
-<p>✔ Log monitoring & threat detection</p>
-<p>✔ TryHackMe labs</p>
-</div>
+  <!-- HABILIDADES -->
+  <section class="skills-section">
+    <h2 class="section-title">Habilidades y Tecnologías</h2>
 
-<div class="bg-gray-900 p-6 rounded-xl shadow-lg">
-<h2 class="text-purple-300 text-xl mb-2">📈 GITHUB STATS</h2>
-<img src="https://github-readme-stats.vercel.app/api?username=CarlosConcepcion&show_icons=true&theme=tokyonight">
-</div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-title">🔐 Seguridad</div>
+        <div class="skill-tags">
+          <span class="tag">Pentesting</span>
+          <span class="tag">Nmap</span>
+          <span class="tag">Burp Suite</span>
+          <span class="tag">OWASP</span>
+          <span class="tag">Análisis CVE</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">🌐 Redes</div>
+        <div class="skill-tags">
+          <span class="tag">TCP/IP</span>
+          <span class="tag">Wireshark</span>
+          <span class="tag">VPN</span>
+          <span class="tag">Firewalls</span>
+          <span class="tag">DNS</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">💻 Desarrollo</div>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Bash</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Git</span>
+          <span class="tag">HTML/CSS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-bar-list">
+      <div class="skill-bar-item">
+        <div class="skill-bar-label"><span>Seguridad Web</span><span>70%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="70"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-label"><span>Redes</span><span>80%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="80"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-label"><span>Detección de Amenazas</span><span>60%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="60"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-label"><span>Python</span><span>60%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="60"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCIA -->
+  <section class="experience-section">
+    <h2 class="section-title">Experiencia</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-card">
+          <div class="timeline-role">Auditor de Ciberseguridad</div>
+          <div class="timeline-company">@ Avonatra Technologies</div>
+          <div class="timeline-desc">Realicé escaneos con Nmap y análisis de vulnerabilidades en infraestructura interna. Llevé a cabo monitoreo de logs, detección de amenazas y apoyo en procedimientos de respuesta a incidentes.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2024</div>
+        <div class="timeline-card">
+          <div class="timeline-role">Estudiante de Ciberseguridad</div>
+          <div class="timeline-company">@ Universidad Tecnológica de Panamá</div>
+          <div class="timeline-desc">Participación activa en laboratorios de TryHackMe sobre explotación web, escalada de privilegios y forense de redes. Desarrollé habilidades en desafíos CTF y simulaciones de ataques reales.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- GITHUB -->
+  <section class="github-section">
+    <h2 class="section-title">Estadísticas de GitHub</h2>
+    <img
+      class="github-stats-img"
+      src="https://github-readme-stats.vercel.app/api?username=CarlosConcepcion&show_icons=true&theme=tokyonight&hide_border=true&bg_color=13131c&title_color=c084fc&icon_color=a07de0&text_color=e2e0f0&locale=es"
+      alt="Estadísticas de GitHub de Carlos"
+    />
+  </section>
+
+</main>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.pct + '%';
+      });
+    }, 600);
+  });
+</script>
 
 </body>
 </html>
