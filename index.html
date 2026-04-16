@@ -21,6 +21,10 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -77,7 +81,10 @@
       transition: color 0.2s;
     }
 
-    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
 
     main {
       position: relative;
@@ -87,14 +94,28 @@
       padding: 4rem 2rem 6rem;
     }
 
+    .about-section,
+    .skills-section,
+    .projects-section,
+    .experience-section,
+    .github-section,
+    .contact-section {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .skills-section { animation-delay: 0.15s; }
+    .projects-section { animation-delay: 0.25s; }
+    .experience-section { animation-delay: 0.35s; }
+    .github-section { animation-delay: 0.45s; }
+    .contact-section { animation-delay: 0.55s; }
+
     .about-section {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 3rem;
       align-items: start;
       margin-bottom: 5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards;
     }
 
     .section-title {
@@ -130,19 +151,15 @@
     }
 
     .deco { position: relative; }
+
     .deco::after {
       content: '✦';
       position: absolute;
       color: var(--purple-dim);
       font-size: 1.2rem;
-      top: -20px; right: -10px;
+      top: -20px;
+      right: -10px;
       animation: spin 8s linear infinite;
-    }
-
-    .skills-section {
-      margin-bottom: 5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.2s ease forwards;
     }
 
     .skills-grid {
@@ -174,7 +191,11 @@
       margin-bottom: 1rem;
     }
 
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
 
     .tag {
       background: var(--surface2);
@@ -223,11 +244,6 @@
       transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
     }
 
-    .experience-section {
-      opacity: 0;
-      animation: fadeUp 0.7s 0.4s ease forwards;
-    }
-
     .timeline {
       margin-top: 1.5rem;
       display: flex;
@@ -268,6 +284,8 @@
       box-shadow: 0 0 20px rgba(124,92,191,0.4);
       position: relative;
       z-index: 1;
+      text-align: center;
+      padding: 0.5rem;
     }
 
     .timeline-card {
@@ -312,11 +330,6 @@
       margin: 4rem 0;
     }
 
-    .github-section {
-      opacity: 0;
-      animation: fadeUp 0.7s 0.6s ease forwards;
-    }
-
     .github-stats-img {
       border-radius: 12px;
       margin-top: 1.5rem;
@@ -324,17 +337,80 @@
       border: 1px solid var(--border);
     }
 
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.6rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .contact-card:hover {
+      border-color: var(--purple);
+      box-shadow: 0 4px 24px rgba(124,92,191,0.12);
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(28px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-12px); }
     }
+
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 860px) {
+      nav {
+        padding: 1rem 1.25rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .about-section {
+        grid-template-columns: 1fr;
+      }
+
+      .pixel-character {
+        margin: 0 auto;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline::before {
+        left: 24px;
+      }
+
+      .timeline-item {
+        gap: 1rem;
+      }
+
+      .timeline-year {
+        width: 52px;
+        height: 52px;
+        font-size: 0.68rem;
+      }
     }
   </style>
 </head>
@@ -343,24 +419,25 @@
 <nav>
   <div class="logo">carlos.cc</div>
   <ul class="nav-links">
-    <li><a href="#">Inicio</a></li>
-    <li><a href="#" class="active">Sobre mí</a></li>
-    <li><a href="#">Proyectos</a></li>
-    <li><a href="#">Blog</a></li>
-    <li><a href="#">Contacto</a></li>
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#sobre-mi" class="active">Sobre mí</a></li>
+    <li><a href="#proyectos">Proyectos</a></li>
+    <li><a href="#experiencia">Experiencia</a></li>
+    <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
 
-<main>
+<main id="inicio">
 
   <!-- SOBRE MÍ -->
-  <section class="about-section">
+  <section class="about-section" id="sobre-mi">
     <div class="about-text">
       <h1 class="section-title">Sobre mí</h1>
-      <p>Soy un estudiante apasionado de ciberseguridad y pentester junior con experiencia práctica en análisis de vulnerabilidades, detección de amenazas y seguridad de redes.</p>
-      <p>Cuando no estoy cazando bugs, me encuentro en laboratorios de TryHackMe, contribuyendo a herramientas de seguridad de código abierto o explorando nuevos vectores de ataque.</p>
-      <p>Siempre estoy emocionado de trabajar en proyectos que me desafíen a crecer y aprender algo nuevo.</p>
+      <p>Soy estudiante de Licenciatura en Ciberseguridad en la UTP, con experiencia práctica como Auditor de Ciberseguridad en Avonatra Technologies y formación enfocada en análisis de vulnerabilidades, detección de amenazas, protección de redes y uso de herramientas de seguridad informática.</p>
+      <p>Me gusta aprender haciendo: practico en laboratorios, desarrollo pequeñas herramientas y sigo fortaleciendo mis habilidades en pentesting, monitoreo de eventos y evaluación de riesgos en sistemas y redes.</p>
+      <p>Mi objetivo es seguir creciendo como profesional de ciberseguridad, construyendo proyectos reales y aplicando soluciones útiles en entornos digitales.</p>
     </div>
+
     <div class="pixel-character deco">
       <svg class="pixel-art" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
         <rect x="4" y="7" width="8" height="7" fill="#7c5cbf"/>
@@ -402,27 +479,29 @@
           <span class="tag">Nmap</span>
           <span class="tag">Burp Suite</span>
           <span class="tag">OWASP</span>
-          <span class="tag">Análisis CVE</span>
+          <span class="tag">Análisis de Vulnerabilidades</span>
         </div>
       </div>
+
       <div class="skill-card">
         <div class="skill-card-title">🌐 Redes</div>
         <div class="skill-tags">
           <span class="tag">TCP/IP</span>
-          <span class="tag">Wireshark</span>
-          <span class="tag">VPN</span>
-          <span class="tag">Firewalls</span>
-          <span class="tag">DNS</span>
+          <span class="tag">Monitoreo</span>
+          <span class="tag">Logs</span>
+          <span class="tag">Detección de Amenazas</span>
+          <span class="tag">Protección de Redes</span>
         </div>
       </div>
+
       <div class="skill-card">
         <div class="skill-card-title">💻 Desarrollo</div>
         <div class="skill-tags">
           <span class="tag">Python</span>
-          <span class="tag">Bash</span>
           <span class="tag">Linux</span>
           <span class="tag">Git</span>
           <span class="tag">HTML/CSS</span>
+          <span class="tag">Automatización</span>
         </div>
       </div>
     </div>
@@ -432,17 +511,56 @@
         <div class="skill-bar-label"><span>Seguridad Web</span><span>70%</span></div>
         <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="70"></div></div>
       </div>
+
       <div class="skill-bar-item">
         <div class="skill-bar-label"><span>Redes</span><span>80%</span></div>
         <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="80"></div></div>
       </div>
+
       <div class="skill-bar-item">
-        <div class="skill-bar-label"><span>Detección de Amenazas</span><span>60%</span></div>
-        <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="60"></div></div>
+        <div class="skill-bar-label"><span>Detección de Amenazas</span><span>75%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="75"></div></div>
       </div>
+
       <div class="skill-bar-item">
-        <div class="skill-bar-label"><span>Python</span><span>60%</span></div>
-        <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="60"></div></div>
+        <div class="skill-bar-label"><span>Python</span><span>65%</span></div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="65"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROYECTOS -->
+  <section class="projects-section" id="proyectos">
+    <h2 class="section-title">Proyectos</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-card">
+          <div class="timeline-role">Herramienta de Escaneo Automatizado</div>
+          <div class="timeline-company">@ Proyecto Personal</div>
+          <div class="timeline-desc">Desarrollo de scripts y flujos de trabajo para automatizar escaneos de red y enumeración de servicios, utilizando herramientas como Nmap para identificar activos, puertos abiertos y posibles exposiciones de seguridad.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Labs</div>
+        <div class="timeline-card">
+          <div class="timeline-role">Laboratorios de Pentesting</div>
+          <div class="timeline-company">@ TryHackMe</div>
+          <div class="timeline-desc">Práctica constante en entornos simulados de ciberseguridad, trabajando reconocimiento, análisis de protocolos, explotación básica, evaluación de vulnerabilidades y aprendizaje práctico de técnicas de seguridad ofensiva.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-card">
+          <div class="timeline-role">Participación en Hackathon UTP</div>
+          <div class="timeline-company">@ Hackathon UTP 2025</div>
+          <div class="timeline-desc">Participación en un entorno de alta exigencia desarrollando soluciones tecnológicas y fortaleciendo habilidades de análisis, innovación, redes, programación y trabajo en equipo aplicadas a ciberseguridad.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -450,28 +568,26 @@
   <div class="divider"></div>
 
   <!-- EXPERIENCIA -->
-  <section class="experience-section">
+  <section class="experience-section" id="experiencia">
     <h2 class="section-title">Experiencia</h2>
     <div class="timeline">
-
       <div class="timeline-item">
         <div class="timeline-year">2025</div>
         <div class="timeline-card">
           <div class="timeline-role">Auditor de Ciberseguridad</div>
           <div class="timeline-company">@ Avonatra Technologies</div>
-          <div class="timeline-desc">Realicé escaneos con Nmap y análisis de vulnerabilidades en infraestructura interna. Llevé a cabo monitoreo de logs, detección de amenazas y apoyo en procedimientos de respuesta a incidentes.</div>
+          <div class="timeline-desc">Experiencia en análisis de logs y monitoreo de eventos para detección de amenazas e incidentes, uso de herramientas de escaneo y enumeración como Nmap, evaluación de vulnerabilidades y análisis de riesgos, elaboración de informes con recomendaciones de mejora, verificación de controles de seguridad y apoyo en medidas correctivas y preventivas.</div>
         </div>
       </div>
 
       <div class="timeline-item">
-        <div class="timeline-year">2024</div>
+        <div class="timeline-year">UTP</div>
         <div class="timeline-card">
-          <div class="timeline-role">Estudiante de Ciberseguridad</div>
+          <div class="timeline-role">Estudiante de Licenciatura en Ciberseguridad</div>
           <div class="timeline-company">@ Universidad Tecnológica de Panamá</div>
-          <div class="timeline-desc">Participación activa en laboratorios de TryHackMe sobre explotación web, escalada de privilegios y forense de redes. Desarrollé habilidades en desafíos CTF y simulaciones de ataques reales.</div>
+          <div class="timeline-desc">Formación académica orientada a protección de redes, análisis de vulnerabilidades, seguridad informática y desarrollo de criterio técnico para identificar riesgos y aplicar soluciones reales en entornos digitales.</div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -485,6 +601,24 @@
       src="https://github-readme-stats.vercel.app/api?username=CarlosConcepcion&show_icons=true&theme=tokyonight&hide_border=true&bg_color=13131c&title_color=c084fc&icon_color=a07de0&text_color=e2e0f0&locale=es"
       alt="Estadísticas de GitHub de Carlos"
     />
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACTO -->
+  <section class="contact-section" id="contacto">
+    <h2 class="section-title">Contacto</h2>
+
+    <div class="contact-card">
+      <div class="timeline-role">Información de contacto</div>
+      <div class="timeline-company">@ Disponible para oportunidades y colaboración</div>
+
+      <div class="contact-list">
+        <div>📍 Chiriquí, Panamá</div>
+        <div>📧 carlosconcepcionx@gmail.com</div>
+        <div>📞 (+507) 6936-6748</div>
+      </div>
+    </div>
   </section>
 
 </main>
